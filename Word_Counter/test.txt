@@ -1,0 +1,6 @@
+This is a word counter.
+For test:
+
+one three-three four-
+four four
+Five FIve FIVe FIVE five.
