@@ -1,3 +1,14 @@
 * 获取目录下的文件
 
-  可选参数 suffix , 用以获取以 suffix 结尾的文件名。
+  #+BEGIN_SRC cpp
+    /**
+     ,* @description: 获取目录下的文件，可选: 获取目录下以 suffix 结尾的文件
+     ,* @param {const string} &path
+     ,* @param {vector<string>} &files
+     ,* @param {string} &suffix
+     ,* @return {void}
+     ,*/
+    void listDir(const std::string &path, std::vector<std::string> &files,
+		 std::string suffix = "");
+  #+END_SRC
+
