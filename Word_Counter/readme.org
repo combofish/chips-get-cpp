@@ -2,7 +2,7 @@
 * WordCounter
 
   统计文件的行数，所有单词个数，同时还会记录每个单词首次出现的行数和总共出现的次数。
-  [[file:demo.png][demo]]
+  [[ttps://github.com/combofish/chips-get-cpp/blob/main/Word_Counter/main.cpp][file:demo.png]]
 
 ** 编译
 
