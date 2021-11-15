@@ -11,7 +11,7 @@ counter		1			1
 For		2			1
 test		2			1
 one		4			1
-threethree		4			1
+three-three		4			1
 fourfour		4			1
 four		5			1
 Five		6			1

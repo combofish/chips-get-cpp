@@ -38,7 +38,9 @@ int readFileContent(std::ifstream &ifs, vector<vector<string>> &);
 
 int countWordNumber(vector<vector<string>> &); /* 统计并返回单词个数 */
 bool isFileEmpty(std::ifstream &ifs); /* 用于判断打开文件的是否为空文件 */
-string removePunctuations(const string &s); /* 去掉字符串里的标点符号 */
+
+/* 去掉字符串里的标点符号, 保留 `word-word` 中的连词符 */
+string removePunctuations(const string &s);
 
 /* 分割字符串 */
 vector<string> &split(const string &str, char delim, vector<string> &elems);

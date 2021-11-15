@@ -7,6 +7,7 @@
  */
 
 #include "main.h"
+#include <cctype>
 
 /**
  * @description: 主函数
@@ -239,13 +240,27 @@ bool isFileEmpty(std::ifstream &ifs) {
 }
 
 /**
- * @description: 去掉标点符号
+ * @description: 去掉标点符号, 保留 `word-word` 中的连词符
  * @param {string} &s
  * @return {*}
  */
 string removePunctuations(const string &s) {
-  string tmp(s);
-  tmp.erase(std::remove_if(tmp.begin(), tmp.end(), ispunct), tmp.end());
+  string tmp = "";
+  if (s.size() <= 1) {
+    tmp.append(s);
+    tmp.erase(std::remove_if(tmp.begin(), tmp.end(), ispunct), tmp.end());
+  } else {
+    for (int i = 0; i < s.size(); i++) {
+      // 循环 string.
+      if ((i != 0) && (i != s.size() - 1) && (!std::ispunct(s[i - 1])) &&
+          s[i] == '-' && (!std::ispunct(s[i + 1]))) {
+        tmp += s[i];
+      }
+
+      if (!std::ispunct(s[i]))
+        tmp += s[i];
+    }
+  }
   return tmp;
 }
 
