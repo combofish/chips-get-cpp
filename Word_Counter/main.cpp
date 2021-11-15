@@ -186,7 +186,7 @@ int readFileContent(std::ifstream &ifs, vector<vector<string>> &sta) {
     // cout << ">>> Read Line: " << lineStr << " tellg: " << ifs.tellg() <<
     // endl;
 
-    char end_char = lineStr[lineStr.size() - 1];
+    char end_char = lineStr.empty() ? ' ' : lineStr[lineStr.size() - 1];
     if (end_char == '-') {
       thisLineNotEnd = true;
     }
@@ -246,20 +246,15 @@ bool isFileEmpty(std::ifstream &ifs) {
  */
 string removePunctuations(const string &s) {
   string tmp = "";
-  if (s.size() <= 1) {
-    tmp.append(s);
-    tmp.erase(std::remove_if(tmp.begin(), tmp.end(), ispunct), tmp.end());
-  } else {
-    for (int i = 0; i < s.size(); i++) {
-      // 循环 string.
-      if ((i != 0) && (i != s.size() - 1) && (!std::ispunct(s[i - 1])) &&
-          s[i] == '-' && (!std::ispunct(s[i + 1]))) {
-        tmp += s[i];
-      }
-
-      if (!std::ispunct(s[i]))
-        tmp += s[i];
+  for (int i = 0; i < s.size(); i++) {
+    // 循环 string.
+    if ((i != 0) && (i != s.size() - 1) && (!std::ispunct(s[i - 1])) &&
+        s[i] == '-' && (!std::ispunct(s[i + 1]))) {
+      tmp += s[i];
     }
+
+    if (!std::ispunct(s[i]))
+      tmp += s[i];
   }
   return tmp;
 }
