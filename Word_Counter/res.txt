@@ -1,21 +1,21 @@
 Read file:		test.txt
-Lines number:		6
-Words number:		16
+Lines number:		8
+Words number:		19
 Unique word number:	16
 Word		First appear in		Count
-This		1			1
+FIVE		8			1
+FIVe		8			1
+FIve		8			1
+five		8			1
+test		1			1
 is		1			1
-a		1			1
-word		1			1
-counter		1			1
 For		2			1
-test		2			1
-one		4			1
-three-three		4			1
-fourfour		4			1
-four		5			1
-Five		6			1
-FIve		6			1
-FIVe		6			1
-FIVE		6			1
-five		6			1
+Test		2			1
+document		1			1
+This		1			1
+easy-going		4			1
+a		1			1
+improve		4			1
+four		7			4
+you're		5			1
+Five		8			1

@@ -8,18 +8,23 @@
 
 #include "main.h"
 #include <cctype>
+#include <unordered_map>
+#include <utility>
 
 /**
  * @description: 主函数
  */
 int main(int argc, char **argv) {
-  std::ifstream ifs;
-  ifs.open(dataFileName);
-  std::ofstream ofs;
-  ofs.open(resultFileName);
-  int linesNumber;               /* 用于保存文件行数 */
-  int wordsNumber;               /* 用于保存单词个数 */
-  vector<WordInfo> wordInfoList; /* 用于保存每个单词的统计信息 */
+
+  std::ifstream ifs(dataFileName);
+  std::ofstream ofs(resultFileName);
+
+  int linesNumber; /* 用于保存文件行数 */
+  int wordsNumber; /* 用于保存单词个数 */
+
+  /* 用于保存每个单词的统计信息: 单词，首次出现行号，出现次数 */
+  unordered_map<string, pair<int, int>> wordInfoList;
+
   std::stringstream resultStringStream; /* 用字符流保存要输出的数据 */
   vector<vector<string>> sta; /* 初始化默认栈，初始大小为16 */
 
@@ -36,8 +41,8 @@ int main(int argc, char **argv) {
   }
 
   linesNumber = readFileContent(ifs, sta); /* 读取文件，并返回读取文件的行数 */
-  wordsNumber = countWordNumber(sta); /* 统计单词个数 */
-  countAll(sta, wordInfoList);        /* 统计单词详情 */
+  countWord(sta, wordInfoList);       /* 统计单词详情 */
+  wordsNumber = countWordNumber(wordInfoList); /* 统计单词个数 */
 
   if (linesNumber >
       limitedLinesNumber) /* 当文件行数过多时（大于 64k），给出提示 */
@@ -62,12 +67,13 @@ int main(int argc, char **argv) {
 }
 
 /**
- * @description: 打印 wordInfo 向量，到输出流中，默认到标准输出流
+ * @description: 打印 wordInfo，到输出流中，默认到标准输出流
  * @param {vector<WordInfo>} &wordInfoList
  * @param {ostream} &outs
  * @return {void}
  */
-void printCountResult(vector<WordInfo> &wordInfoList, std::ostream &outs) {
+void printCountResult(unordered_map<string, pair<int, int>> &wordInfoList,
+                      std::ostream &outs) {
 
   outs << "Unique word number:\t" << wordInfoList.size() << endl;
   outs << "Word"
@@ -77,48 +83,8 @@ void printCountResult(vector<WordInfo> &wordInfoList, std::ostream &outs) {
        << "Count" << endl;
 
   for (auto &wordInfo : wordInfoList) {
-    outs << wordInfo.word << "\t\t" << wordInfo.lineNumberOfFirstOccurrence
-         << "\t\t\t" << wordInfo.count << endl;
-  }
-}
-
-/**
- * @description: 输入单词和 wordInfo 向量，判断某个单词是否已被记录：
- *     若是：返回该单词在 wordInfo 向量中的索引
- *     若否：该单词还没被记录，返回 -1
- * @param {string} &word
- * @param {vector<WordInfo>} &wordInfoList
- * @return {int}
- */
-int isExist(const string &word, vector<WordInfo> &wordInfoList) {
-  for (int i = 0; i < wordInfoList.size(); i++) {
-    if (wordInfoList[i].word == word)
-      return i;
-  }
-  return -1;
-}
-
-/**
- * @description: 记录(单词信息，所在行号)到 wordInfo 向量中
- * @param {string} &word
- * @param {int} lineNumber
- * @param {vector<WordInfo>} &wordInfoList
- * @return {void}
- */
-void recordWord(const string &word, int lineNumber,
-                vector<WordInfo> &wordInfoList) {
-  int index = isExist(word, wordInfoList);
-  if (-1 == index) {
-    /* 还没有记录该单词*/
-    WordInfo wordInfo;
-    wordInfo.word = word;
-    wordInfo.lineNumberOfFirstOccurrence = lineNumber;
-    wordInfo.count = 1;
-
-    wordInfoList.push_back(wordInfo);
-  } else {
-    /* 已记录该单词*/
-    wordInfoList[index].count++;
+    outs << wordInfo.first << "\t\t" << wordInfo.second.first << "\t\t\t"
+         << wordInfo.second.second << endl;
   }
 }
 
@@ -127,19 +93,19 @@ void recordWord(const string &word, int lineNumber,
  * @param {vector<vector<string>> &sta, vector<WordInfo>} &wordInfoList
  * @return {void}
  */
-void countAll(vector<vector<string>> &sta, vector<WordInfo> &wordInfoList) {
-  int lineNumber;
-  vector<string> lineStrs;
-
-  for (int i = 0; i < sta.size(); i++) {
-    lineNumber = i + 1;
-    lineStrs = sta[i];
-
-    for (int j = 0; j < lineStrs.size(); j++) {
-      if (lineStrs[j].empty())
-        continue;
-
-      recordWord(lineStrs[j], lineNumber, wordInfoList);
+void countWord(vector<vector<string>> &sta,
+               unordered_map<string, pair<int, int>> &wordInfoList) {
+  int lineNumber = 0;
+  for (auto lineStr : sta) {
+    ++lineNumber;
+    for (auto str : lineStr) {
+      if (!str.empty()) {
+        auto it = wordInfoList.find(str);
+        if (it != wordInfoList.end())
+          wordInfoList[str].second++;
+        else
+          wordInfoList[str] = std::make_pair(lineNumber, 1);
+      }
     }
   }
 }
@@ -149,18 +115,10 @@ void countAll(vector<vector<string>> &sta, vector<WordInfo> &wordInfoList) {
  * @param {vector<vector<string>>} &sta
  * @return {int}
  */
-int countWordNumber(vector<vector<string>> &sta) {
+int countWordNumber(unordered_map<string, pair<int, int>> &wordInfoList) {
   int wordsNumber = 0;
-  for (int i = 0; i < sta.size(); i++) {
-    vector<string> vstr;
-    vstr = sta[i];
-    for (int j = 0; j < vstr.size(); j++) {
-      if (!vstr[j].empty()) {
-        wordsNumber++;
-        // cout << wordsNumber << "     :" << vstr[j] << endl;
-      }
-    }
-  }
+  for (auto wordInfo : wordInfoList)
+    wordsNumber += wordInfo.second.second;
   return wordsNumber;
 }
 
@@ -193,7 +151,7 @@ int readFileContent(std::ifstream &ifs, vector<vector<string>> &sta) {
     tmpStr = removePunctuations(lineStr);
     split(tmpStr, ' ', vstr);
     if (!vstr.empty() && preLineNotEnd == true) {
-      cout << "linesNumber: " << linesNumber << endl;
+      // cout << "linesNumber: " << linesNumber << endl;
 
       vector<string> *preLine = &sta[sta.size() - 1];
       *(preLine->rbegin()) += *vstr.begin();
@@ -206,25 +164,8 @@ int readFileContent(std::ifstream &ifs, vector<vector<string>> &sta) {
     linesNumber++;
   }
 
-  cout << "sta.size(): " << sta.size() << endl;
-
+  // cout << "sta.size(): " << sta.size() << endl;
   return linesNumber;
-}
-
-void makeUpWords(vector<vector<string>> &sta) {
-  vector<string> line;
-  vector<string> nextLine;
-
-  for (int i = 0; i < sta.size() - 1; i++) {
-    line = sta[i];
-    nextLine = sta[i + 1];
-    if (!line.empty() && !nextLine.empty()) {
-      // box not empty.
-      string s = *line.rbegin();
-      if (s[s.size() - 1] == '-') {
-      }
-    }
-  }
 }
 
 /**
@@ -249,7 +190,7 @@ string removePunctuations(const string &s) {
   for (int i = 0; i < s.size(); i++) {
     // 循环 string.
     if ((i != 0) && (i != s.size() - 1) && (!std::ispunct(s[i - 1])) &&
-        s[i] == '-' && (!std::ispunct(s[i + 1]))) {
+        ((s[i] == '-') || (s[i] == '\'')) && (!std::ispunct(s[i + 1]))) {
       tmp += s[i];
     }
 

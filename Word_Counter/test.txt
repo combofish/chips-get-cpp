@@ -1,6 +1,8 @@
-This is a word counter.
-For test:
+This is a test document.
+For Test:
 
-one three-three four-
-four four
-Five FIve FIVe FIVE five.
+easy-going imp-
+rove. you're
+
+four four four four.
+five Five FIve FIVe FIVE.
