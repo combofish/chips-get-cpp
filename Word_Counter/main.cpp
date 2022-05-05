@@ -8,6 +8,8 @@
 
 #include "main.h"
 #include <cctype>
+#include <string.h>
+#include <string>
 #include <unordered_map>
 #include <utility>
 
@@ -41,7 +43,7 @@ int main(int argc, char **argv) {
   }
 
   linesNumber = readFileContent(ifs, sta); /* 读取文件，并返回读取文件的行数 */
-  countWord(sta, wordInfoList);       /* 统计单词详情 */
+  countWord(sta, wordInfoList);                /* 统计单词详情 */
   wordsNumber = countWordNumber(wordInfoList); /* 统计单词个数 */
 
   if (linesNumber >

@@ -19,8 +19,8 @@ void printStack(CStack<string> &sta) {
 }
 
 int main() {
-  CStack<string> sta(3);
-
+  CStack<string> sta(1000000002);
+  // 10_0000_0002
   std::stringstream ss1("hello"), ss2("world");
 
   ss1 >> sta;
@@ -28,6 +28,9 @@ int main() {
 
   printStack(sta);
   cout << sta << endl;
+  cout << "Cap :  " << sta.capacity() << endl;
   printStack(sta);
+  int a;
+  cin >> a;
   return 0;
 }
