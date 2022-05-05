@@ -1,3 +1,6 @@
+# Ignore bak files
+*~
+
 # Ignore build dir
 */build/*
 

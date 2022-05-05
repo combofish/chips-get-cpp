@@ -1,0 +1,17 @@
+* Leetcode-Solution-Cpp : Leetcode 题解
+
+- `combofish_utils.hpp` 自定义头文件
+- `test_blank.cpp` 文件模板
+- `test_xxx.cpp` 第xxx题题解  
+
+** 依赖
+
+- 格式化输出使用[[https://github.com/renatoGarcia/icecream-cpp][IceCream-Cpp]]库。
+
+** 运行
+
+#+BEGIN_SRC shell
+  cd Leetcode-Solution-Cpp
+  ./scripts/run.sh 1128 # ./scripts/run.sh [question_number]
+#+END_SRC
+
