@@ -10,15 +10,19 @@
 #include <algorithm>
 #include <cctype>
 #include <cstdio>
+#include <ctime>
 #include <functional>
 #include <icecream.hpp>
 #include <iomanip>
 #include <iostream>
 #include <map>
+#include <numeric>
 #include <queue>
+#include <random>
 #include <sstream>
 #include <stack>
 #include <string>
+#include <tuple>
 #include <unordered_map>
 #include <unordered_set>
 #include <utility>
@@ -31,10 +35,12 @@ using std::queue;
 using std::stack;
 using std::string;
 using std::stringstream;
+using std::tuple;
 using std::unordered_map;
 using std::unordered_set;
 using std::vector;
 
+typedef vector<vector<vector<int>>> tensor_t;
 typedef vector<vector<int>> mat_t;
 typedef vector<int> vec_t;
 
