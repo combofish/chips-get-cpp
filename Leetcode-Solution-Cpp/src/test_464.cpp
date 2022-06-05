@@ -2,6 +2,9 @@
 -- method: 记忆化搜索 + 状态压缩
 
 --result:
+执行用时：892 ms, 在所有 C++ 提交中击败了16.15%的用户
+内存消耗：87.4 MB, 在所有 C++ 提交中击败了33.20%的用户
+通过测试用例：57 / 57
 
 -- analyse:
 Time: O((2^n) * n)
@@ -21,7 +24,7 @@ class Solution {
       for (int i = 0; i < maxChoosableInteger; i++) {
         IC(i, usedNumbers, usedNumbers >> i, (usedNumbers >> i) & i);
 
-        if (((usedNumbers >> i) & i) == 0) {
+        if (((usedNumbers >> i) & 1) == 0) {
           if (1 + i + currentTotal >= desiredTotal) {
             res = true;
             break;
@@ -59,7 +62,7 @@ int main() {
   Solution *solution = new Solution();
 
   // code start
-  int maxChoosableInteger = 10, desiredTotal = 11;
+  int maxChoosableInteger = 10, desiredTotal = 40;
   IC(maxChoosableInteger, desiredTotal);
   IC(solution->canIWin(maxChoosableInteger, desiredTotal));
   IC(false);

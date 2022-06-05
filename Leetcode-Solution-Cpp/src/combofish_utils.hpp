@@ -127,3 +127,29 @@ template <typename T> void out(T t, string s = "Res") {
 template <typename T> void outln(T t, string s = "Res") {
   cout << s << ": " << t << endl;
 }
+
+void out_line() { cout << endl; }
+
+void posterOrder(TreeNode *root) {
+  if (root != nullptr) {
+    cout << root->val << endl;
+    posterOrder(root->left);
+    posterOrder(root->right);
+  }
+}
+
+void middleOrder(TreeNode *root) {
+  if (root != nullptr) {
+    middleOrder(root->left);
+    cout << root->val << endl;
+    middleOrder(root->right);
+  }
+}
+
+void hindOrder(TreeNode *root) {
+  if (root != nullptr) {
+    hindOrder(root->left);
+    hindOrder(root->right);
+    cout << root->val << endl;
+  }
+}
