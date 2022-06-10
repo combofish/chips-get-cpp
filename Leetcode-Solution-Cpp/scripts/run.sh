@@ -14,5 +14,10 @@ if [ ! -d "$DIR" ];then
    echo "create dir: $DIR"
 fi
    
-# compile and run and del
-g++ --std=c++2a -g "./src/${filename}.cpp" -o ./run/$filename && ./run/$filename && rm ./run/$filename
+   # compile and run and del
+   #    g++ --std=c++2a -g -Wall
+   clang++ -fsanitize=address -O1 -fno-omit-frame-pointer -g \
+	   "./src/${filename}.cpp" -o ./run/$filename \
+       && ./run/$filename \
+       && rm ./run/$filename \
+

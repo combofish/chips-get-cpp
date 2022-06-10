@@ -10,6 +10,7 @@ Space: O()
  */
 
 #include "combofish_utils.hpp"
+#include <algorithm>
 
 class Solution {
 public:
@@ -24,5 +25,8 @@ int main() {
 
   // code start
 
+  // code end
+
+  delete solution;
   return 0;
 }
