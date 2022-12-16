@@ -24,13 +24,14 @@ public:
         while (n-- && cur != nullptr) {
             cur = cur->next;
         }
-        cur = cur->next;
+//        cur = cur->next;
 
-        while (cur != nullptr) {
+        while (cur->next) {
             cur = cur->next;
             low = low->next;
         }
 
+        IC(cur->val, low->val);
         ListNode *tmp = low->next;
         low->next = tmp->next;
         delete tmp;

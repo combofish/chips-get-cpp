@@ -1,11 +1,14 @@
 /*
- * @Author: your name
+ * @Author: combofish
  * @Date: 2022-04-23 19:22:57
  * @LastEditTime: 2022-04-27 18:55:56
  * @LastEditors: your name
  * @Description: utils
  * @FilePath: /use_for_test/combofish_utils.hpp
  */
+
+#ifndef LEETCODE_SOLUTION_CPP_COMBOFISH_UTILS_H
+#define LEETCODE_SOLUTION_CPP_COMBOFISH_UTILS_H
 
 #include <algorithm>
 #include <cctype>
@@ -29,32 +32,132 @@
 #include <vector>
 #include <list>
 
-using std::list;
+// use fmt lib.
+#include <fmt/core.h>
+#include <fmt/format.h>
+// #include <fmt/printf.h>
+// #include <fmt/format-inl.h>
+// #include <fmt/std.h>
+
+
 using std::cout;
 using std::endl;
-using std::pair;
-using std::queue;
-using std::stack;
+
 using std::string;
-using std::stringstream;
-using std::tuple;
+
+using std::vector;
+using std::array;
+
+using std::stack;
+using std::queue;
+using std::list;
+
 using std::unordered_map;
 using std::unordered_set;
-using std::vector;
+
+using std::stringstream;
+
+using std::pair;
+using std::tuple;
+
+using std::max;
+using std::sort;
+using std::swap;
+using std::make_shared;
 
 typedef vector<vector<vector<int>>> tensor_t;
 typedef vector<vector<int>> mat_t;
 typedef vector<int> vec_t;
 
-void out_sta(stack<int> sta_) {
-    vec_t sta;
-    while (!sta_.empty()) {
-        sta.emplace_back(sta_.top());
-        sta_.pop();
+/**************************************************************************
+ *
+ * define start
+ *
+ *************************************************************************/
+
+struct ListNode;
+struct TreeNode;
+
+namespace treenode_tools {
+    // 二叉树的层序遍历
+    std::vector<std::vector<int>> levelOrder(TreeNode *root);
+
+    // Recursive delete TreeNode.
+    void deleteTreeNode(TreeNode *pNode);
+
+    // 二叉树的最大深度
+    int maxDepth(TreeNode *root);
+
+    // 从字符串生成二叉树 "[1,null,2,null,null,]" -> TreeNode
+    TreeNode *string2TreeNode(const std::string &str);
+
+    // Encodes a tree to a single string.
+    std::string serialize(TreeNode *root);
+
+    // Decodes your encoded data to tree.
+    TreeNode *deserialize(const string &data);
+
+    // 从前序遍历的数据生成二叉树
+    TreeNode *traversalDeserialize(std::list<std::string> &dataList);
+}
+
+// 从列表构建链表
+ListNode *vecT2ListNode(const vector<int> &nums);
+
+// 输出链表
+void outListNode(ListNode *node, string s = "ListNode");
+
+// 输出栈数据
+template<typename T>
+void outStack(const stack<T> &cst);
+
+// 删除 ListNode
+void deleteListNode(ListNode *node);
+
+
+/**************************************************************************
+ *
+ * define end
+ *
+ *************************************************************************/
+
+struct ListNode {
+    int val;
+    ListNode *next;
+
+    ListNode() : val(0), next(nullptr) {}
+
+    explicit ListNode(int x) : val(x), next(nullptr) {}
+
+    ListNode(int x, ListNode *next) : val(x), next(next) {}
+};
+
+struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+
+    TreeNode() : val(0), left(nullptr), right(nullptr) {}
+
+    explicit TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+
+    TreeNode(int x, TreeNode *left, TreeNode *right)
+            : val(x), left(left), right(right) {}
+};
+
+
+template<typename T>
+void outStack(const stack<T> &cst) {
+    vector<T> vec;
+    stack<T> st = cst;
+
+    while (!st.empty()) {
+        vec.emplace_back(st.top());
+        st.pop();
     }
 
-    std::reverse(sta.begin(), sta.end());
-    IC(sta);
+    std::reverse(vec.begin(), vec.end());
+    IC(vec);
 }
 
 void out_qu(queue<int> qu_) {
@@ -67,40 +170,8 @@ void out_qu(queue<int> qu_) {
     IC(qu);
 }
 
-struct ListNode {
-    int val;
-    ListNode *next;
 
-    ListNode() : val(0), next(nullptr) {}
-
-    ListNode(int x) : val(x), next(nullptr) {}
-
-    ListNode(int x, ListNode *next) : val(x), next(next) {}
-};
-
-struct TreeNode {
-    int val;
-    TreeNode *left;
-    TreeNode *right;
-
-    TreeNode() : val(0), left(nullptr), right(nullptr) {}
-
-    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
-
-    TreeNode(int x, TreeNode *left, TreeNode *right)
-            : val(x), left(left), right(right) {}
-};
-
-struct MyTreeNode {
-    int val;
-    MyTreeNode *left;
-    MyTreeNode *right;
-
-    MyTreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
-};
-
-// 从列表构建链表
-ListNode *vec_t2list_node(vec_t &nums) {
+ListNode *vecT2ListNode(const vector<int> &nums) {
     if (nums.empty())
         return nullptr;
 
@@ -133,8 +204,8 @@ void deleteListNode(ListNode *input, int n) {
     }
 }
 
-// 输出链表
-void out_list_node(ListNode *node, string s = "ListNode") {
+
+void outListNode(ListNode *node, string s) {
     vec_t res;
     while (node != nullptr) {
         res.emplace_back(node->val);
@@ -206,13 +277,120 @@ void hindOrder(TreeNode *root) {
     }
 }
 
-/**
- * recursive delete TreeNode*
- * @param pNode
- */
-void deleteTreeNode(TreeNode *pNode) {
-    if (!pNode) return;
-    deleteTreeNode(pNode->left);
-    deleteTreeNode(pNode->right);
-    delete pNode;
+namespace treenode_tools {
+    int maxDepth(TreeNode *root) {
+        if (!root) return 0;
+        std::queue<TreeNode *> qu;
+        qu.push(root);
+
+        int depth = 0;
+        while (!qu.empty()) {
+            int n = qu.size();
+            depth++;
+            while (n--) {
+                auto node = qu.front();
+                qu.pop();
+                if (node->left) qu.push(node->left);
+                if (node->right) qu.push(node->right);
+            }
+        }
+
+        return depth;
+    }
+
+    std::vector<std::vector<int>> levelOrder(TreeNode *root) {
+        std::vector<std::vector<int>> result;
+        if (!root) return result;
+
+        std::queue<TreeNode *> qu;
+        qu.push(root);
+        while (!qu.empty()) {
+            int n = qu.size();
+            std::vector<int> vec;
+            while (n--) {
+                TreeNode *node = qu.front();
+                qu.pop();
+                vec.emplace_back(node->val);
+
+                if (node->left) qu.push(node->left);
+                if (node->right) qu.push(node->right);
+            }
+            result.emplace_back(vec);
+        }
+
+        return result;
+    }
+
+    void deleteTreeNode(TreeNode *pNode) {
+        if (!pNode) return;
+        deleteTreeNode(pNode->left);
+        deleteTreeNode(pNode->right);
+        delete pNode;
+    }
+
+    TreeNode *string2TreeNode(const std::string &str) {
+        if (str.front() == '[' && str.back() == ']')
+            return deserialize(str.substr(1, str.size() - 2));
+        else
+            return deserialize(str);
+    }
+
+    std::string serialize(TreeNode *root) {
+        if (!root) return "null,";
+
+        std::string result;
+        std::stack<TreeNode *> st;
+        st.push(root);
+        while (!st.empty()) {
+            auto node = st.top();
+            st.pop();
+            if (!node) result += "null,";
+            else {
+                result += std::to_string(node->val) + ",";
+                st.push(node->right);
+                st.push(node->left);
+            }
+        }
+
+        return result;
+    }
+
+    TreeNode *deserialize(const string &data) {
+        std::list<string> dataList;
+        string tmpStr;
+        for (const auto &item: data) {
+            if (item == ',') {
+                dataList.emplace_back(tmpStr);
+                tmpStr.clear();
+            } else {
+                tmpStr.push_back(item);
+            }
+        }
+
+        if (!tmpStr.empty()) {
+            dataList.push_back(tmpStr);
+            tmpStr.clear();
+        }
+
+//        IC(dataList);
+        return traversalDeserialize(dataList);
+    }
+
+
+    TreeNode *traversalDeserialize(std::list<std::string> &dataList) {
+        if (dataList.front() == "null") {
+            dataList.erase(dataList.begin());
+            return nullptr;
+        }
+
+        auto node = new TreeNode(std::stoi(dataList.front()));
+        dataList.erase(dataList.begin());
+        node->left = traversalDeserialize(dataList);
+        node->right = traversalDeserialize(dataList);
+        return node;
+    }
+
 }
+
+
+#endif //LEETCODE_SOLUTION_CPP_COMBOFISH_UTILS_H
