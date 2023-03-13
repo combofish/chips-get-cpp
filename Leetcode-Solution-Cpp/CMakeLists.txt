@@ -26,4 +26,10 @@ add_subdirectory(src/HOT-100)
 # find_package(fmt)
 # target_link_libraries(hot_438_2 fmt::fmt)
 
-# 
+#
+# add_library(name SHARED )
+
+
+add_executable(off_42_2 src/Offer-2th/off_42_2.cpp src/Offer-2th/test.cpp )
+# add_executable(off_42_2 src/Offer-2th/off_42_2.cpp )
+# add_executable(off_42_2 src/Offer-2th/off_42_2.cpp)

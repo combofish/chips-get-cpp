@@ -7,9 +7,6 @@
  * @FilePath: /use_for_test/combofish_utils.hpp
  */
 
-#ifndef LEETCODE_SOLUTION_CPP_COMBOFISH_UTILS_H
-#define LEETCODE_SOLUTION_CPP_COMBOFISH_UTILS_H
-
 #include <algorithm>
 #include <cctype>
 #include <cstdio>
@@ -18,6 +15,7 @@
 #include <icecream.hpp>
 #include <iomanip>
 #include <iostream>
+#include <list>
 #include <map>
 #include <numeric>
 #include <queue>
@@ -30,14 +28,18 @@
 #include <unordered_set>
 #include <utility>
 #include <vector>
-#include <list>
 
 // use fmt lib.
-#include <fmt/core.h>
-#include <fmt/format.h>
+
 // #include <fmt/printf.h>
 // #include <fmt/format-inl.h>
 // #include <fmt/std.h>
+#include <fmt/core.h>
+#include <fmt/format.h>
+
+
+#ifndef LEETCODE_SOLUTION_CPP_COMBOFISH_UTILS_H
+#define LEETCODE_SOLUTION_CPP_COMBOFISH_UTILS_H
 
 
 using std::cout;
@@ -45,12 +47,12 @@ using std::endl;
 
 using std::string;
 
-using std::vector;
 using std::array;
+using std::vector;
 
-using std::stack;
-using std::queue;
 using std::list;
+using std::queue;
+using std::stack;
 
 using std::unordered_map;
 using std::unordered_set;
@@ -60,10 +62,10 @@ using std::stringstream;
 using std::pair;
 using std::tuple;
 
+using std::make_shared;
 using std::max;
 using std::sort;
 using std::swap;
-using std::make_shared;
 
 typedef vector<vector<vector<int>>> tensor_t;
 typedef vector<vector<int>> mat_t;
@@ -75,10 +77,17 @@ typedef vector<int> vec_t;
  *
  *************************************************************************/
 
+class person {
+public:
+    void out();
+};
+
 struct ListNode;
 struct TreeNode;
 
 namespace treenode_tools {
+    // int a = 1;
+
     // 二叉树的层序遍历
     std::vector<std::vector<int>> levelOrder(TreeNode *root);
 
@@ -99,7 +108,7 @@ namespace treenode_tools {
 
     // 从前序遍历的数据生成二叉树
     TreeNode *traversalDeserialize(std::list<std::string> &dataList);
-}
+}// namespace treenode_tools
 
 // 从列表构建链表
 ListNode *vecT2ListNode(const vector<int> &nums);
@@ -120,6 +129,11 @@ void deleteListNode(ListNode *node);
  * define end
  *
  *************************************************************************/
+
+
+void person::out() {
+    IC("HH");
+}
 
 struct ListNode {
     int val;
@@ -372,7 +386,7 @@ namespace treenode_tools {
             tmpStr.clear();
         }
 
-//        IC(dataList);
+        //        IC(dataList);
         return traversalDeserialize(dataList);
     }
 
@@ -390,7 +404,8 @@ namespace treenode_tools {
         return node;
     }
 
-}
+}// namespace treenode_tools
 
 
 #endif //LEETCODE_SOLUTION_CPP_COMBOFISH_UTILS_H
+
